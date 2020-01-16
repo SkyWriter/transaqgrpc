@@ -39,12 +39,13 @@ namespace Firelib
             {
                 try
                 {
+                    var task = Task.Run( () => { } );
                     while (true)
                     
                     {
                         var take = dic[responseStream].Take();
                         Console.Out.WriteLine($"pushed to client: {take}");
-                        responseStream.WriteAsync(new Str {Txt = take});
+                        task = task.ContinueWith( _ => { responseStream.WriteAsync(new Str {Txt = take}); } );
                     }
 
                 }
